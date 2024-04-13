@@ -1,23 +1,44 @@
-import logo from './logo.svg';
-import './App.css';
+// App.js
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import LandingPage from './components/LandingPage';
+import Cart from './components/Cart';
+import Admin from './components/Admin';
 
 function App() {
+  
+  const [cartItems, setCartItems] = useState([]);
+  const [products, setProducts] = useState([]);
+
+  // Function to remove an item from the cart
+  const removeFromCart = (itemId) => {
+    const updatedCartItems = cartItems.filter(item => item.id !== itemId);
+    setCartItems(updatedCartItems);
+  };
+
+  // Function to adjust the quantity of an item in the cart
+  const adjustQuantity = (itemId, amount) => {
+    const updatedCartItems = cartItems.map(item => {
+      if (item.id === itemId) {
+        const updatedQuantity = item.quantity + amount;
+        // Ensure the quantity is not negative
+        const newQuantity = updatedQuantity < 0 ? 0 : updatedQuantity;
+        return { ...item, quantity: newQuantity };
+      }
+      return item;
+    });
+    setCartItems(updatedCartItems);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+    <Router>
+      <Routes>
+      <Route path='/' element={<LandingPage products={products} setProducts={setProducts}/>}/>
+      <Route path='/cart' element={<Cart cartItems={cartItems} removeFromCart={removeFromCart} adjustQuantity={adjustQuantity} />}/>
+      <Route path='/admin' element={<Admin products={products} setProducts={setProducts} />} />
+      </Routes>
+    </Router>
     </div>
   );
 }
