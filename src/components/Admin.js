@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Container, IconButton, TextField, Button, Dialog, 
+import { Container, TextField, Button, Dialog, 
   DialogActions, DialogContent, DialogContentText, DialogTitle, 
   TableContainer, Table, TableHead, TableBody, 
   TableRow, TableCell, Paper } from '@mui/material';
-  import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-  import axios from 'axios';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Admin = ({ products, setProducts }) => {
   const [showCart, setShowCart] = useState(false);
@@ -81,15 +82,15 @@ const Admin = ({ products, setProducts }) => {
     return;
   }
     try {
-      const response = await fetch('http://localhost:5000/products', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(newProduct),
-      });
-      if (response.ok) {
+      const response = await axios.post('http://localhost:5000/products', newProduct, {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+      if (response.status === 200) {
         console.log('Product added successfully');
+        toast.success('Product added successfully!');
+        fetchProducts();
         const updatedProduct = { ...newProduct };
         console.log(updatedProduct);
         setProducts((prevProducts) => [...prevProducts, updatedProduct]);
@@ -121,7 +122,6 @@ const Admin = ({ products, setProducts }) => {
 
   const handleDelete = (id) => {
     setDeleteProductId(id);
-    console.log(id);
     setOpenDeleteDialog(true);
   };
 
@@ -133,7 +133,6 @@ const Admin = ({ products, setProducts }) => {
     setEditProductPrice(product.price);
     setQuantityAvailable(product.quantity_available);
     setOpenEditDialog(true);
-    console.log(product)
   };
 
   const handleCloseEditDialog = () => {
@@ -209,8 +208,8 @@ const Admin = ({ products, setProducts }) => {
             label="Product Name"
             type="text"
             fullWidth
-            value={editProduct ? editProduct.name : ''}
-            onChange={handleEditInputChange}
+            value={editProductName}
+            onChange={(e)=>setEditProductName(e.target.value)}
           />
           <TextField
             margin="dense"
@@ -219,8 +218,8 @@ const Admin = ({ products, setProducts }) => {
             label="Product Description"
             type="text"
             fullWidth
-            value={editProduct ? editProduct.description : ''}
-            onChange={handleEditInputChange}
+            value={editProductDescription}
+            onChange={(e)=>setEditProductDescription(e.target.value)}
           />
           <TextField
             margin="dense"
@@ -229,8 +228,9 @@ const Admin = ({ products, setProducts }) => {
             label="Product Price"
             type="number"
             fullWidth
-            value={editProduct ? editProduct.price : ''}
-            onChange={handleEditInputChange}
+            value={editProductPrice}
+            onChange={(e) => setEditProductPrice(e.target.value)}
+            
           />
           <TextField
             margin="dense"
@@ -239,8 +239,6 @@ const Admin = ({ products, setProducts }) => {
             label="Available quantity"
             type="number"
             fullWidth
-            // value={editProduct ? editProduct.quantity_available : ''}
-            // onChange={handleEditInputChange}
             value={editQuantityAvailable}
             onChange={(e) => setQuantityAvailable(e.target.value)}
           />

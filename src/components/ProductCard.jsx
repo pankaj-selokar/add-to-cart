@@ -1,29 +1,3 @@
-// import React from 'react';
-// import { Button, Card, CardContent, Typography } from '@mui/material';
-
-// const ProductCard = ({ product, onAddToCart }) => {
-//   return (
-//     <Card>
-//       <CardContent>
-//         <Typography variant="h5" component="div">
-//           {product.name}
-//         </Typography>
-//         <Typography variant="body2" color="text.secondary">
-//           {product.description}
-//         </Typography>
-//         <Typography variant="h6" color="text.secondary">
-//           Price: ${product.price}
-//         </Typography>
-//       </CardContent>
-//       <Button onClick={() => onAddToCart(product)} variant="contained" color="primary">
-//         Add to Cart
-//       </Button>
-//     </Card>
-//   );
-// };
-
-// export default ProductCard;
-
 import React from 'react';
 import { Button, Card, CardContent, Typography } from '@mui/material';
 import axios from 'axios';
@@ -52,7 +26,7 @@ const ProductCard = ({ product }) => {
           {product.description}
         </Typography>
         <Typography variant="h6" color="text.secondary">
-          Price: ${product.price}
+          Price: ₹{product.price}
         </Typography>
       </CardContent>
       <Button onClick={() => onAddToCart(product)} variant="contained" color="primary">

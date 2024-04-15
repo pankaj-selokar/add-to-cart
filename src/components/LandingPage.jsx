@@ -5,6 +5,8 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import Cart from './Cart';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const LandingPage = ({products, setProducts}) => {
@@ -33,7 +35,9 @@ const LandingPage = ({products, setProducts}) => {
     try {
       const response = await axios.post('http://localhost:5000/cart', product);
       if (response.status === 200) {
+        toast.warning('Product added to cart');
         console.log('Product added to cart successfully');
+        
         setShowCart(true); // Optionally, you can redirect to the cart page after adding the product to the cart
       } else {
         console.error('Failed to add product to cart');

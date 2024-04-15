@@ -4,6 +4,8 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import LandingPage from './components/LandingPage';
 import Cart from './components/Cart';
 import Admin from './components/Admin';
+import UserDetails from './components/UserDetails';
+import { ToastContainer} from 'react-toastify';
 
 function App() {
   
@@ -32,13 +34,18 @@ function App() {
 
   return (
     <div>
+    
+    
     <Router>
+    <ToastContainer></ToastContainer>
       <Routes>
       <Route path='/' element={<LandingPage products={products} setProducts={setProducts}/>}/>
       <Route path='/cart' element={<Cart cartItems={cartItems} removeFromCart={removeFromCart} adjustQuantity={adjustQuantity} />}/>
       <Route path='/admin' element={<Admin products={products} setProducts={setProducts} />} />
-      </Routes>
+      <Route path='/user_details' element={ <UserDetails/>} />
+      </Routes>      
     </Router>
+    
     </div>
   );
 }
