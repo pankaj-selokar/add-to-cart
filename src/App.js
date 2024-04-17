@@ -6,6 +6,10 @@ import Cart from './components/Cart';
 import Admin from './components/Admin';
 import UserDetails from './components/UserDetails';
 import { ToastContainer} from 'react-toastify';
+import Login  from './components/Login';
+import Signup from './components/Signup';
+import Razorpay from './components/Razorpay';
+import standard from '../server/standard'
 
 function App() {
   
@@ -39,10 +43,14 @@ function App() {
     <Router>
     <ToastContainer></ToastContainer>
       <Routes>
-      <Route path='/' element={<LandingPage products={products} setProducts={setProducts}/>}/>
+      <Route path='/home' element={<LandingPage products={products} setProducts={setProducts}/>}/>
       <Route path='/cart' element={<Cart cartItems={cartItems} removeFromCart={removeFromCart} adjustQuantity={adjustQuantity} />}/>
       <Route path='/admin' element={<Admin products={products} setProducts={setProducts} />} />
       <Route path='/user_details' element={ <UserDetails/>} />
+      <Route path='/login' element={<Login/>}></Route>
+      <Route path='/signup' element={<Signup/>}></Route>
+      <Route path='/razorpay' element={<Razorpay/>}></Route>
+      <Route path='/payment' element={<standard/>}></Route>
       </Routes>      
     </Router>
     

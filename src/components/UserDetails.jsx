@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import { Container, TextField, Button, Typography, Grid, FormControlLabel, Checkbox } from '@mui/material';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import axios from 'axios';
 
 const UserDetails = () => {
   const [formData, setFormData] = useState({
-    userName: '',
+    user_name: '',
     email: '',
-    contactNumber: '',
+    contact: '',
     country:'',
     address: '',
     pincode: '',
@@ -16,9 +17,9 @@ const UserDetails = () => {
   const [agreeTerms, setAgreeTerms] = useState(false);
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [formErrors, setFormErrors] = useState({
-    userName: '',
+    user_name: '',
     email: '',
-    contactNumber: '',
+    contact: '',
     country:'',
     address: '',
     pincode: ''
@@ -72,9 +73,9 @@ const UserDetails = () => {
     // console.log('Form submitted:', formData);
     // Reset form after submission
     setFormData({
-      userName: '',
+      user_name: '',
       email: '',
-      contactNumber: '',
+      contact: '',
       country:'',
       address: '',
       pincode: '',
@@ -84,10 +85,10 @@ const UserDetails = () => {
     setFormSubmitted(false);
   };
 
-  const handleFormSubmit = () => {
+  const handleFormSubmit = async () => {
     setFormSubmitted(true);
     let isError = false;
-    if(formData.userName.trim() === ''){
+    if(formData.user_name.trim() === ''){
         setUserNameError('User name is required');
         isError = true;
     }else{
@@ -99,8 +100,8 @@ const UserDetails = () => {
     }else{
         setEmailError('');
     }
-    if(formData.contactNumber.trim() === ''){
-        setContactNumberError('contactNumber is required');
+    if(formData.contact.trim() === ''){
+        setContactNumberError('contact number is required');
         isError = true;
     }else{
         setContactNumberError('');
@@ -109,7 +110,7 @@ const UserDetails = () => {
         setCountryError('country is required');
         isError = true;
     }else{
-        setContactNumberError('');
+        setCountryError('');
     }
     if(formData.address.trim() === ''){
         setAddressError('Address is required');
@@ -124,10 +125,31 @@ const UserDetails = () => {
         setPincodeError('');
     }
     if (isError) {
-        console.error('Please fill in all required fields');
+        console.error('Please fill all required fields');
         toast.error('Please fill required fields!');
         return;
       }
+    
+    try{
+        const response = await axios.post('http://localhost:5000/user_details',formData ,{
+            headers:{
+                'Content-Type': 'application/json',
+            }
+        });
+        console.log('response:',response);
+        if (response.status === 200) {
+            console.log('user details added successfully');
+            toast.success('user details added successfully!');
+            const updatedForm = { ...formData };
+            console.log(updatedForm);
+            setFormData({ user_name:'', email:'', contact:'', country:'', address:'', pincode:'', landmark:'' });
+          } else {
+            console.error('Failed to add product');
+          }
+    }
+    catch(error){
+        console.log('Error adding user details: ', error);
+    }
   };
 
   return (
@@ -141,8 +163,8 @@ const UserDetails = () => {
             <TextField
               fullWidth
               label="User Name"
-              name="userName"
-              value={formData.userName}
+              name="user_name"
+              value={formData.user_name}
               onChange={handleChange}
               error={Boolean(userNameError)}
               helperText={userNameError}
@@ -167,8 +189,8 @@ const UserDetails = () => {
               fullWidth
               label="Contact Number"
               type="tel"
-              name="contactNumber"
-              value={formData.contactNumber}
+              name="contact"
+              value={formData.contact}
               onChange={handleChange}
               error={Boolean(contactNumberError)}
               helperText={contactNumberError}
@@ -181,7 +203,7 @@ const UserDetails = () => {
               label="Country"
               type="text"
               name="country"
-              value={formData.contry}
+              value={formData.country}
               onChange={handleChange}
               error={Boolean(countryError)}
               helperText={countryError}
@@ -230,8 +252,8 @@ const UserDetails = () => {
             />
           </Grid>
           <Grid item xs={12}>
-            <Button type="submit" onClick={handleFormSubmit
-            } variant="contained" color="primary" disabled={!agreeTerms}>
+            <Button type="submit" onClick={handleFormSubmit}
+             variant="contained" color="primary" disabled={!agreeTerms}>
               Submit
             </Button>
           </Grid>

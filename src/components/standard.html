@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Script Outside HTML</title>
+  </head>
+  <body>
+    <h1>Welcome to TeaFactory</h1>
+    <h4>Buy Ooty Green Tea</h4>
+    <img
+      src="https://images.pexels.com/photos/1581484/pexels-photo-1581484.jpeg"
+      width="400"
+    />
+    <p>
+      Your senses with green tea grow on the<br />foothills of the Nalgiris.
+    </p>
+    <h4>INR 339 for 250 gms</h4>
+    <button id="rzp-buutton1">Pay</button>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Script defined outside HTML -->
+    <script>
+      var orderId;
+      $(document).ready(function () {
+        var settings = {
+          url: "/create/orderId",
+          method: "POST",
+          timeout: 0,
+          headers: {
+            "Content-Type": "application/json",
+          },
+          data: JSON.stringify({
+            amount: "52900",
+          }),
+        };
+        //creates new orderId everytime
+        $.ajax(settings).done(function (response) {
+          orderId = response.orderId;
+          console.log(orderId);
+          $("button").show();
+        });
+      });
+
+      document.getElementById("rzp-button1").onclick = function (e) {
+        var options = {
+          key: "rzp_test_9sk0KuKuUpCTKM",
+          amount: "3000",
+          currency: "INR",
+          name: "Tea Factory",
+          description: "Buy green tea",
+          image: "https://example.com/your_logo",
+          order_id: orderId,
+          handler: function (response) {
+            alert(response.razorpay_payment_id);
+            alert(response.razorpay_order_id);
+            alert(response.razorpay_signiture);
+            console.log(response);
+            var settings = {
+              url: "/create/orderId",
+              method: "POST",
+              timeout: 0,
+              headers: {
+                "Content-Type": "application/json",
+              },
+              data: JSON.stringify({ response }),
+            };
+            //creates new orderId everytime
+            $.ajax(settings).done(function (response) {
+              alert(JSON.stringify(response));
+            });
+          },
+          theme: {
+            color: "#99cc33",
+          },
+        };
+        var rzp1 = new Razorpay(options);
+        rzp1.on("payment.failed", function (response) {
+          alert(response.error.code);
+          alert(response.error.description);
+          alert(response.error.sourcce);
+          alert(response.error.step);
+          alert(response.error.reason);
+          alert(response.error.metadata.order_id);
+          alert(response.error.metadata.payment_id);
+        });
+        rzp1.open();
+        e.preventDefault();
+      };
+    </script>
+  </body>
+</html>
