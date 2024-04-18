@@ -1,6 +1,8 @@
 import React from 'react';
 import { Button, Card, CardContent, Typography } from '@mui/material';
 import axios from 'axios';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const ProductCard = ({ product }) => {
   const onAddToCart = async (product) => {
@@ -9,6 +11,7 @@ const ProductCard = ({ product }) => {
       const response = await axios.post('http://localhost:5000/cart', product);
       if (response.status === 200) {
         console.log('Product added to cart successfully');
+        toast.success('Product added to cart');
       } else {
         console.error('Failed to add product to cart');
       }
