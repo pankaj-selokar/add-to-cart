@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Grid, Container, IconButton } from '@mui/material';
+import { Grid, Container, IconButton, Typography, Divider } from '@mui/material';
 import ProductCard from './ProductCard';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import Cart from './Cart';
@@ -49,7 +49,17 @@ const LandingPage = ({products, setProducts}) => {
   };
 
   return (
-    <Container>
+    <Container style={{ 
+      background: 'linear-gradient(#e664, #9198e5)',
+      padding: '20px',
+      borderRadius: '10px'
+  }}>
+      <Typography variant="h6" align="center" 
+      style={{ marginBottom: '20px', marginTop: '10px',
+      fontFamily: 'San Francisco, sans-serif', fontSize: '24px' }}>
+                <span style={{ color: '##101720', fontWeight: 'bold' }}>Vowels Web Cart</span>
+            </Typography>
+            <Divider style={{ marginBottom: '20px' }} />
       <Link to="/cart" style={{ textDecoration: 'none', color: 'inherit' }}>
       <IconButton  sx={{ position: 'absolute', top: '10px', right: '10px' }}>
         <ShoppingCartIcon />
