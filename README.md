@@ -79,3 +79,10 @@ create file app.js in server folder
     npm install cors
 
     write code for connections with port and sql database
+
+------------------------------------------------------------------------------
+### I refer this stuff from :https://www.youtube.com/watch?v=OgHQ16OzLkE
+
+Note: Dont forget to add `Razorpay script` in the index.html 
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
