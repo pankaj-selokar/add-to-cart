@@ -42,11 +42,11 @@ function App() {
     <Router>
     <ToastContainer></ToastContainer>
       <Routes>
-      <Route path='/' element={<LandingPage products={products} setProducts={setProducts}/>}/>
+      <Route path='/home' element={<LandingPage products={products} setProducts={setProducts}/>}/>
       <Route path='/cart' element={<Cart cartItems={cartItems} removeFromCart={removeFromCart} adjustQuantity={adjustQuantity} />}/>
       <Route path='/admin' element={<Admin products={products} setProducts={setProducts} />} />
       <Route path='/user_details' element={ <UserDetails/>} />
-      <Route path='/login' element={<Login/>}></Route>
+      <Route path='/' element={<Login/>}></Route>
       <Route path='/signup' element={<Signup/>}></Route>
       <Route path='/standard_payment' element={<Standard/>}></Route>
       </Routes>      

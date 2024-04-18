@@ -51,27 +51,7 @@ const UserDetails = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     
-    // const errors = {};
-    // // Check for empty fields
-    // for (const key in formData) {
-    //   if (key !== 'landmark' && !formData[key].trim()) {
-    //     errors[key] = 'This field is required';
-    //   }
-    // }
-    // // Check for valid email format
-    // const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    // if (formData.email && !emailPattern.test(formData.email)) {
-    //   errors.email = 'Please enter a valid email address';
-    // }
-    // // Update form errors state
-    // setFormErrors(errors);
-    // // If there are errors, do not submit the form
-    // if (Object.keys(errors).length > 0) {
-    //   return;
-    // }
-    // // You can perform form submission logic here, like sending the data to the server
-    // console.log('Form submitted:', formData);
-    // Reset form after submission
+    
     setFormData({
       user_name: '',
       email: '',

@@ -14,7 +14,6 @@ const Login = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [usernameExists, setUsernameExists] = useState(false);
     const [loginAttempts, setLoginAttempts] = useState(0);
-    //const [blockedUser, setBlockedUser] = useState(false);
 
     const cardStyle = {
         width: '24rem',
@@ -63,10 +62,11 @@ const Login = () => {
         try {
             const response = await axios.get(`http://localhost:5000/users?userName=${username}`);
             const userData = response.data;
-
+            console.log(userData);
             if (userData.length > 0) {
                 // Username exists
                 const user = userData[0]; // Assume username is unique
+                console.log(user.password+" "+password);
                 if (user.password === password) {
                     // Password matches
                     localStorage.setItem('loggedInUser', username);
@@ -81,13 +81,6 @@ const Login = () => {
                         }
                         else{
                         toast.error('Invalid password!, try again');
-                        setLoginAttempts(loginAttempts + 1);
-                        if (loginAttempts >= 2) {
-                            // Block the username after 3 unsuccessful attempts
-                            // blockUsername(username);
-                            handleBlockedUserNavigation(username);
-                            return;
-                         }
                     }
                 }
             } else {
@@ -144,7 +137,7 @@ const Login = () => {
 
     //         if(userData.length > 0) {
     //             const user = userData[0];
-    //             await axios.post(`http://localhost:8000/blockUser/`, { id: user.id, userName: user.userName });
+    //             await axios.post(`http://localhost:5000/blockUser/`, { id: user.id, userName: user.userName });
     //             // setBlockedUsers(prevBlockedUsers => [...prevBlockedUsers, { id: user.id, userName: user.userName }]);
     //             toast.error('Your account has been blocked due to multiple unsuccessful login attempts.');
     //         } else {
@@ -157,9 +150,9 @@ const Login = () => {
     //     }
     // };
 
-    const handleBlockedUserNavigation = (blockedUsername) => {
-        navigate('/home', { state: { blockedUser: username } });
-    };
+    // const handleBlockedUserNavigation = (blockedUsername) => {
+    //     navigate('/home', { state: { blockedUser: username } });
+    // };
 
 
     return (

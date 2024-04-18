@@ -143,12 +143,12 @@ app.post('/users', (req, res) => {
     lastName,
     email,
     password,
-    username,
+    userName,
 
   } = req.body;
   console.log(req.body);
-  const sql = 'INSERT INTO user_details (firstName, lastName, email, password, username) VALUES (?, ?, ?, ?, ?)';
-  const values = [firstName, lastName, password, email, username];
+  const sql = 'INSERT INTO users (firstName, lastName, email, password, userName) VALUES (?, ?, ?, ?, ?)';
+  const values = [firstName, lastName, email, password, userName];
 
   db.query(sql, values, (err, result) => {
     if (err) {
@@ -161,6 +161,19 @@ app.post('/users', (req, res) => {
   });
 });
 
+app.get('/users', (req, res) => {
+  const sql = 'SELECT * FROM users';
+
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error('Error retrieving user details from database: ', err);
+      res.status(500).json({ error: 'Error retrieving user details from database' });
+    } else {
+      console.log('User details retrieved successfully');
+      res.status(200).json(results);
+    }
+  });
+});
 
 app.delete('/products/:product_id', (req, res) => {
   const productId = req.params.product_id; // Get the productId from URL parameters

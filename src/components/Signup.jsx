@@ -15,35 +15,14 @@ const Signup = () => {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [confirmPasswordError, setConfirmPasswordError] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState('');
-    const [username, setUsername] = useState('');
+    const [userName, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [emailError, setEmailError] = useState('');
-    // const [secureQuestion, setSecureQuestion] = useState('');
-    // const [secureQuestionAnswer, setSecureQuestionAnswer] = useState('');
-    // const [latestId, setLatestId] = useState(10);
-
-    // Default secure questions from config file
-    // const defaultSecureQuestions = [
-    //     'What is your mother\'s maiden name?',
-    //     'What is the name of your first pet?',
-    //     'What is the city of your birth?',
-    // ];
-
-    // const generateNumericId = () => {
-    //     return Math.floor(Math.random() * 100).toString();
-    // };
+    
 
     const handleSubmit = async () => {
 
-        // Check if username already exists
-        // const usernameResponse = await axios.get(`http://localhost:5000/users?userName=${userName}`);
-        // const existingUser = usernameResponse.data.length > 0;
-
-        // if (existingUser) {
-        //     toast.error('Username already exists! Please choose a different username.');
-        //     return;
-        // }
-        // Is empty validations
+        
         if (firstName === '') {
             setFirstNameError(true);
             toast.error('First name cannot be empty!');
@@ -81,31 +60,22 @@ const Signup = () => {
         
 
         try {
-            // const id = generateNumericId();
-            // const id = (latestId + 1).toString();
+            
             const formData = {
-                // id,
+
                 firstName,
                 lastName,
                 email,
                 password,
-                username,
-                // secureQuestion,
-                // secureQuestionAnswer,
+                userName,
             }
 
             await axios.post('http://localhost:5000/users', formData);
             
-            // Update the state for latest ID
-            // setLatestId(latestId + 1);
-
-            // Clear form fields after successful submission
             setFirstName('');
             setLastName('');
             setPassword('');
             setConfirmPassword('');
-            // setSecureQuestion('');
-            // setSecureQuestionAnswer('');
 
             toast.success('Form data saved successfully!');
         } catch (error) {
@@ -189,31 +159,7 @@ const Signup = () => {
                                     }}
                                 />
                             </Grid>
-                            {/* <Grid item xs={6}>
-                                <TextField
-                                    select
-                                    label="Secure Question"
-                                    variant="outlined"
-                                    fullWidth
-                                    value={secureQuestion}
-                                    onChange={(e) => setSecureQuestion(e.target.value)}
-                                >
-                                    {defaultSecureQuestions.map((question, index) => (
-                                        <MenuItem key={index} value={question}>{question}</MenuItem>
-                                    ))}
-                                </TextField>
-                            </Grid>
-                            <Grid item xs={6}>
-                                <TextField
-                                    type="text"
-                                    label="Answer for the Secure Question"
-                                    variant="outlined"
-                                    fullWidth
-                                    placeholder="Answer"
-                                    value={secureQuestionAnswer}
-                                    onChange={(e) => setSecureQuestionAnswer(e.target.value)}
-                                />
-                            </Grid> */}
+                            
                             <Grid item xs={6}>
                                 <TextField
                                     type='email'
@@ -234,7 +180,7 @@ const Signup = () => {
                                     varient='outlined'
                                     fullWidth
                                     placeholder='username'
-                                    value={username}
+                                    value={userName}
                                     onChange={(e)=>setUsername(e.target.value)}
                                 />
                             </Grid>
@@ -244,7 +190,7 @@ const Signup = () => {
                         <Button variant="contained" color="primary" onClick={handleSubmit}>
                             Signup
                         </Button>
-                        <Link to="/login"><Button variant="contained" color="success">Login</Button></Link>
+                        <Link to="/"><Button variant="contained" color="success">Login</Button></Link>
                     </Stack>
                 </CardContent>
 
