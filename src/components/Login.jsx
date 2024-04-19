@@ -73,7 +73,12 @@ const Login = () => {
                     setUsername('');
                     setPassword('');
                     toast.success('Login successful');
-                    navigate('/home');
+                    if(username === 'pankajselokar'){
+                        navigate('/admin');
+                    }else{
+                        navigate('/home');
+                    }
+                    
                 } else {
                         if(password===''){
                             setPasswordError(true);

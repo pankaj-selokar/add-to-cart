@@ -1,15 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { Container, TextField, Button, Dialog, 
-  DialogActions, DialogContent, DialogContentText, DialogTitle, 
-  TableContainer, Table, TableHead, TableBody, 
-  TableRow, TableCell, Paper } from '@mui/material';
+import {
+  Container, TextField, Button, Dialog,
+  DialogActions, DialogContent, DialogContentText, DialogTitle,
+  TableContainer, Table, TableHead, TableBody,
+  TableRow, TableCell, Paper,
+  Grid,
+  Box,
+  Typography
+} from '@mui/material';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Admin = ({ products, setProducts }) => {
   const [showCart, setShowCart] = useState(false);
-  const [newProduct, setNewProduct] = useState({ name: '', description: '', price: '', quantity:'' });
+  const [newProduct, setNewProduct] = useState({ name: '', description: '', price: '', quantity: '' });
   const [deleteProductId, setDeleteProductId] = useState(null); // Keep track of the product to be deleted
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [nameError, setNameError] = useState('');
@@ -45,7 +50,7 @@ const Admin = ({ products, setProducts }) => {
       console.error('Error fetching products: ', error);
     }
   };
-  
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setNewProduct({ ...newProduct, [name]: value });
@@ -58,35 +63,34 @@ const Admin = ({ products, setProducts }) => {
 
   const handleAddProduct = async () => {
     // Check if any of the fields are empty
-  let isError = false;
-  if (newProduct.name.trim() === '') {
-    setNameError('Product name is required');
-    isError = true;
-  }
-  if (newProduct.description.trim() === '') {
-    setDescriptionError('Product description is required');
-    isError = true;
-  }
-  if (newProduct.price.trim() === '') {
-    setPriceError('Product price is required');
-    isError = true;
-  }
-  if (newProduct.quantity.trim() === '') {
-    setQuantityError('Available quantity is required');
-    isError = true;
-  }
+    let isError = false;
+    if (newProduct.name.trim() === '') {
+      setNameError('Product name is required');
+      isError = true;
+    }
+    if (newProduct.description.trim() === '') {
+      setDescriptionError('Product description is required');
+      isError = true;
+    }
+    if (newProduct.price.trim() === '') {
+      setPriceError('Product price is required');
+      isError = true;
+    }
+    if (newProduct.quantity.trim() === '') {
+      setQuantityError('Available quantity is required');
+      isError = true;
+    }
 
-  if (isError) {
-    console.error('Please fill in all required fields');
-    // Display error message or handle it as per your UI/UX design
-    return;
-  }
+    if (isError) {
+      console.error('Please fill in all required fields');
+      return;
+    }
     try {
       const response = await axios.post('http://localhost:5000/products', newProduct, {
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
       if (response.status === 200) {
         console.log('Product added successfully');
         toast.success('Product added successfully!');
@@ -94,7 +98,7 @@ const Admin = ({ products, setProducts }) => {
         const updatedProduct = { ...newProduct };
         console.log(updatedProduct);
         setProducts((prevProducts) => [...prevProducts, updatedProduct]);
-        setNewProduct({ name: '', description: '', price: '', quantity:'' });
+        setNewProduct({ name: '', description: '', price: '', quantity: '' });
       } else {
         console.error('Failed to add product');
       }
@@ -104,8 +108,8 @@ const Admin = ({ products, setProducts }) => {
   };
 
   const confirmDelete = async () => {
-    try {      
-      console.log('delete id:'+deleteProductId);
+    try {
+      console.log('delete id:' + deleteProductId);
 
       const response = await axios.delete(`http://localhost:5000/products/${deleteProductId}`);
       if (response.status === 200) {
@@ -142,13 +146,13 @@ const Admin = ({ products, setProducts }) => {
 
   const handleSubmitEdit = async () => {
     try {
-      
+
       const updatedProduct = {
-        ...editProduct, 
-        name : editProductName, 
-        description : editProductDescription,
-        price : editProductPrice,
-        quantity_available : editQuantityAvailable
+        ...editProduct,
+        name: editProductName,
+        description: editProductDescription,
+        price: editProductPrice,
+        quantity_available: editQuantityAvailable
       };
       const response = await axios.put(`http://localhost:5000/products/${editProduct.product_id}`, updatedProduct);
       if (response.status === 200) {
@@ -165,10 +169,10 @@ const Admin = ({ products, setProducts }) => {
 
   const handleEditInputChange = (e) => {
     const { name, value } = e.target;
-  setEditProduct(prevEditProduct => ({
-    ...prevEditProduct,
-    [name]: value
-  }));
+    setEditProduct(prevEditProduct => ({
+      ...prevEditProduct,
+      [name]: value
+    }));
   };
 
   return (
@@ -209,7 +213,7 @@ const Admin = ({ products, setProducts }) => {
             type="text"
             fullWidth
             value={editProductName}
-            onChange={(e)=>setEditProductName(e.target.value)}
+            onChange={(e) => setEditProductName(e.target.value)}
           />
           <TextField
             margin="dense"
@@ -219,7 +223,7 @@ const Admin = ({ products, setProducts }) => {
             type="text"
             fullWidth
             value={editProductDescription}
-            onChange={(e)=>setEditProductDescription(e.target.value)}
+            onChange={(e) => setEditProductDescription(e.target.value)}
           />
           <TextField
             margin="dense"
@@ -230,7 +234,7 @@ const Admin = ({ products, setProducts }) => {
             fullWidth
             value={editProductPrice}
             onChange={(e) => setEditProductPrice(e.target.value)}
-            
+
           />
           <TextField
             margin="dense"
@@ -252,54 +256,82 @@ const Admin = ({ products, setProducts }) => {
           </Button>
         </DialogActions>
       </Dialog>
-      
-        <>
-          <Container>
-            <TextField
-              name="name"
-              label="Product Name"
-              fullWidth
-              value={newProduct.name}
-              onChange={handleInputChange}
-              error={Boolean(nameError)}
-              helperText={nameError}
-            />
-            <TextField
-              name="description"
-              label="Product Description"
-              fullWidth
-              value={newProduct.description}
-              onChange={handleInputChange}
-              error={Boolean(descriptionError)}
-              helperText={descriptionError}
-            />
-            <TextField
-              name="price"
-              label="Product Price"
-              fullWidth
-              type="number"
-              value={newProduct.price}
-              onChange={handleInputChange}
-              error={Boolean(priceError)}
-              helperText={priceError}
-            />
-            <TextField
-              name="quantity"
-              label="Available quantity"
-              fullWidth
-              type="number"
-              value={newProduct.quantity}
-              onChange={handleInputChange}
-              error={Boolean(quantityError)}
-              helperText={quantityError}
-            />
-            <Button variant="contained" onClick={handleAddProduct}>Add Product</Button>
-          </Container>
+
+      <>
+        <Container sx={{ paddingLeft: 0, paddingRight: 0 }}>
+          <Box sx={{ width: '100%'}}>
+           
+              <Typography sx={{mt:2}} variant="h5" display="block" fontWeight={700} gutterBottom  >
+                Add Product Section
+              </Typography>
+            
+
+            <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} sx={{ mb: 2 }}>
+              <Grid item xs={6} >
+                <TextField
+                  name="name"
+                  label="Product Name"
+                  fullWidth
+                  value={newProduct.name}
+                  onChange={handleInputChange}
+                  error={Boolean(nameError)}
+                  helperText={nameError}
+                  sx={{ mb: 2 }}
+                />
+                <TextField
+                  name="description"
+                  label="Product Description"
+                  fullWidth
+                  value={newProduct.description}
+                  onChange={handleInputChange}
+                  error={Boolean(descriptionError)}
+                  helperText={descriptionError}
+                  sx={{ mb: 2 }}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  name="price"
+                  label="Product Price"
+                  fullWidth
+                  type="number"
+                  value={newProduct.price}
+                  onChange={handleInputChange}
+                  error={Boolean(priceError)}
+                  helperText={priceError}
+                  sx={{ mb: 2 }}
+                />
+                <TextField
+                  name="quantity"
+                  label="Available quantity"
+                  fullWidth
+                  type="number"
+                  value={newProduct.quantity}
+                  onChange={handleInputChange}
+                  error={Boolean(quantityError)}
+                  helperText={quantityError}
+                />
+              </Grid>
+            </Grid>
+            <Button variant="contained" onClick={handleAddProduct} >Add Product</Button>
+          </Box>
+        </Container>
+
+        <Box sx={{
+            boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',mt: 5, width: '100%', 
+            borderRadius: '5px',border: '1px solid #ccc'
+            }}
+        >
           <TableContainer component={Paper}>
             <Table aria-label="product table">
               <TableHead>
                 <TableRow>
-                <TableCell>Product Id</TableCell>
+                  <TableCell colSpan={6} align="center">
+                    <Typography variant="h6">Products List</Typography>
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>Product Id</TableCell>
                   <TableCell>Name</TableCell>
                   <TableCell>Description</TableCell>
                   <TableCell>Price</TableCell>
@@ -308,8 +340,8 @@ const Admin = ({ products, setProducts }) => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {products.map((product) => (
-                  <TableRow key={product.id}>
+                {products.map((product, index) => (
+                  <TableRow key={product.id} style={{ backgroundColor: index % 2 === 0 ? '#ede8e8' : 'inherit' }}>
                     <TableCell>{product.product_id}</TableCell>
                     <TableCell>{product.name}</TableCell>
                     <TableCell>{product.description}</TableCell>
@@ -326,8 +358,9 @@ const Admin = ({ products, setProducts }) => {
               </TableBody>
             </Table>
           </TableContainer>
-        </>
-      
+        </Box>
+      </>
+
     </Container>
   );
 };
